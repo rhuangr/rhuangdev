@@ -9,19 +9,10 @@ import {
   useRef,
   useState,
 } from "react";
-import { useAI, type AIResponse } from "./useAI";
+import { useAI } from "./useAI";
+import type { AIResponseType } from "@/app/(site)/components/chat/useAI.ts"
 
-export interface LLMParagraph {
-  subheading: string;
-  content: string;
-}
-
-export interface LLMOutputType {
-  heading: string;
-  paragraphs: LLMParagraph[];
-}
-
-type GeneratedPages = Record<string, LLMOutputType>;
+type GeneratedPages = Record<string, AIResponseType>;
 
 type RhuangrContextType = {
   isLoading: boolean;
@@ -29,7 +20,7 @@ type RhuangrContextType = {
   latestPageSlug: string | null;
   generatedPages: GeneratedPages;
   submitPrompt: (prompt: string) => Promise<void>;
-  getGeneratedPage: (slug: string) => LLMOutputType | null;
+  getGeneratedPage: (slug: string) => AIResponseType | null;
 };
 
 type LoadingContextValue = {
@@ -43,49 +34,47 @@ const slugifyHeading = (heading: string) =>
   heading
     .toLowerCase()
     .trim()
-    .replace(" ", "_");
+    .replace(/\s+/g, "_")
+    .replace(/[^\w-]/g, "");
 
 export function RhuangrContextProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { isLoading, error, submitPrompt: submitPromptInternal } = useAI();
+  const { isLoading, submitPrompt: submitPromptInternal } = useAI();
   const isLoadingRef = useRef(isLoading);
   const [generatedPages, setGeneratedPages] = useState<GeneratedPages>({});
   const [latestPageSlug, setLatestPageSlug] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
+  // updating balatro background when loading
   useEffect(() => {
     isLoadingRef.current = isLoading;
   }, [isLoading]);
-
-  const handleOutput = useCallback((result: AIResponse | null) => {
-    if (!result) {
-      return;
-    }
-
-    const parsed = JSON.parse(result.response) as LLMOutputType;
-    if (!parsed.heading) {
-      throw new Error("Parsed output is missing heading, AI is being stupid.");
-    }
-    const slug = slugifyHeading(parsed.heading);
-    setGeneratedPages((prev) => ({ ...prev, [slug]: parsed }));
-    setLatestPageSlug(slug);
-  }, []);
-
-  const submitPrompt = useCallback(
-    async (prompt: string) => {
-      const result = await submitPromptInternal(prompt);
-      handleOutput(result ?? null);
-    },
-    [handleOutput, submitPromptInternal]
-  );
-
   const loadingValue = useMemo<LoadingContextValue>(
     () => ({
       getIsLoading: () => isLoadingRef.current,
     }),
     []
+  );  
+
+  const submitPrompt = useCallback(
+    async (prompt: string) => {
+      try {
+        const result = await submitPromptInternal(prompt);
+        if (!result) return;
+        const slug = slugifyHeading(result.heading);
+        setLatestPageSlug(slug);
+        setGeneratedPages((prev) => ({ ...prev, [slug]: result }));
+      } catch (error) {
+        console.error("Error submitting prompt:", error);
+        setError(
+          error instanceof Error ? error.message : "An unknown error occurred"
+        );
+      }
+    },
+    [submitPromptInternal]
   );
 
   const getGeneratedPage = useCallback(

@@ -7,6 +7,7 @@ import { useRhuangrContext } from "@/app/(site)/components/chat/rhuangrContext";
 export function DynamicPageContent({ slug }: { slug: string }) {
   const { getGeneratedPage } = useRhuangrContext();
   const page = getGeneratedPage(slug);
+  
 
   if (!page) {
     return (

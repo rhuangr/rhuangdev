@@ -1,10 +1,8 @@
-'use client';
-
-import { Renderer, Program, Mesh, Triangle } from "ogl";
-import { useEffect, useMemo, useRef } from "react";
+import { Renderer, Program, Mesh, Triangle } from 'ogl';
+import { useEffect, useMemo, useRef } from 'react';
 import { useLoadingContext } from "@/app/(site)/components/chat/rhuangrContext";
 
-interface BalatroBackgroundProps {
+interface BalatroProps {
   spinRotation?: number;
   spinSpeed?: number;
   offset?: [number, number];
@@ -17,26 +15,26 @@ interface BalatroBackgroundProps {
   pixelFilter?: number;
   spinEase?: number;
   isRotate?: boolean;
+  mouseInteraction?: boolean;
 }
 
-function hexToVec4(hex: string): Float32Array {
-  const hexStr = hex.replace('#', '');
-  let r = 0;
-  let g = 0;
-  let b = 0;
-  let a = 1;
-
-  if (hexStr.length === 6 || hexStr.length === 8) {
+function hexToVec4(hex: string): [number, number, number, number] {
+  let hexStr = hex.replace('#', '');
+  let r = 0,
+    g = 0,
+    b = 0,
+    a = 1;
+  if (hexStr.length === 6) {
     r = parseInt(hexStr.slice(0, 2), 16) / 255;
     g = parseInt(hexStr.slice(2, 4), 16) / 255;
     b = parseInt(hexStr.slice(4, 6), 16) / 255;
-  }
-
-  if (hexStr.length === 8) {
+  } else if (hexStr.length === 8) {
+    r = parseInt(hexStr.slice(0, 2), 16) / 255;
+    g = parseInt(hexStr.slice(2, 4), 16) / 255;
+    b = parseInt(hexStr.slice(4, 6), 16) / 255;
     a = parseInt(hexStr.slice(6, 8), 16) / 255;
   }
-
-  return new Float32Array([r, g, b, a]);
+  return [r, g, b, a];
 }
 
 const vertexShader = `
@@ -121,26 +119,27 @@ void main() {
 }
 `;
 
-export function BalatroBackground({
+export default function RecBalatro({
   spinRotation = -2.0,
   spinSpeed = 7.0,
   offset = [0.0, 0.0],
-  color1 = "#a43400ff",
-  color2 = "#00234eff",
-  color3 = "#2e005cff",
+  color1 = '#a43400ff',
+  color2 = '#00234eff',
+  color3 = '#2e005cff',
   contrast = 3.5,
   lighting = 0.4,
   spinAmount = 0.25,
   pixelFilter = 745.0,
   spinEase = 1.0,
   isRotate = false,
-}: BalatroBackgroundProps) {
+}: BalatroProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const { getIsLoading } = useLoadingContext();
+  const speedRef = useRef(spinSpeed);
   const currentColorsRef = useRef({
     color1: new Float32Array(hexToVec4(color1)),
     color2: new Float32Array(hexToVec4(color2)),
-    color3: new Float32Array(hexToVec4(color3)),
+    color3: new Float32Array(hexToVec4(color3))
   });
   const lastTimeRef = useRef<number | null>(null);
 
@@ -148,18 +147,17 @@ export function BalatroBackground({
     () => ({
       color1: hexToVec4(color1),
       color2: hexToVec4(color2),
-      color3: hexToVec4(color3),
+      color3: hexToVec4(color3)
     }),
-    [color1, color2, color3],
+    [color1, color2, color3]
   );
 
   const loadingColors = useMemo(
     () => ({
-      color1: hexToVec4("#ffd467ff"),
-      color2: hexToVec4("#ff6c71ff"),
-      color3: hexToVec4(color3),
+      color1: hexToVec4('#ffd467ff'),
+      color2: hexToVec4('#ff6c71ff'),
     }),
-    [color3],
+    []
   );
 
   const loadingSpinSpeed = useMemo(() => spinSpeed * 1.8, [spinSpeed]);
@@ -171,27 +169,22 @@ export function BalatroBackground({
     const gl = renderer.gl;
     gl.clearColor(0, 0, 0, 1);
 
-    let program: Program | null = null;
+    let program: Program;
 
-    const resize = () => {
+    function resize() {
       renderer.setSize(container.offsetWidth, container.offsetHeight);
       if (program) {
-        program.uniforms.iResolution.value = [
-          gl.canvas.width,
-          gl.canvas.height,
-          gl.canvas.width / gl.canvas.height,
-        ];
+        program.uniforms.iResolution.value = [gl.canvas.width, gl.canvas.height, gl.canvas.width / gl.canvas.height];
       }
-    };
-
-    window.addEventListener("resize", resize);
+    }
+    window.addEventListener('resize', resize);
     resize();
 
     const geometry = new Triangle(gl);
     const initialColors = {
       color1: new Float32Array(baseColors.color1),
       color2: new Float32Array(baseColors.color2),
-      color3: new Float32Array(baseColors.color3),
+      color3: new Float32Array(baseColors.color3)
     };
     currentColorsRef.current = initialColors;
     program = new Program(gl, {
@@ -200,7 +193,7 @@ export function BalatroBackground({
       uniforms: {
         iTime: { value: 0 },
         iResolution: {
-          value: [gl.canvas.width, gl.canvas.height, gl.canvas.width / gl.canvas.height],
+          value: [gl.canvas.width, gl.canvas.height, gl.canvas.width / gl.canvas.height]
         },
         uSpinRotation: { value: spinRotation },
         uSpinSpeed: { value: spinSpeed },
@@ -214,16 +207,17 @@ export function BalatroBackground({
         uPixelFilter: { value: pixelFilter },
         uSpinEase: { value: spinEase },
         uIsRotate: { value: isRotate },
-        uMouse: { value: [0.5, 0.5] },
-      },
+        uMouse: { value: [0.5, 0.5] }
+      }
     });
 
     const mesh = new Mesh(gl, { geometry, program });
     let animationFrameId: number;
 
+    speedRef.current = spinSpeed;
     lastTimeRef.current = null;
 
-    const update = (time: number) => {
+    function update(time: number) {
       animationFrameId = requestAnimationFrame(update);
       const isLoading = getIsLoading();
       const lastTime = lastTimeRef.current;
@@ -234,53 +228,40 @@ export function BalatroBackground({
 
       const targetColors = isLoading ? loadingColors : baseColors;
       const colors = currentColorsRef.current;
-
-      const lerp = (current: Float32Array, target: Float32Array) => {
-        for (let i = 0; i < current.length; i += 1) {
-          current[i] += (target[i] - current[i]) * lerpFactor;
-        }
-      };
-
-      lerp(colors.color1, targetColors.color1);
-      lerp(colors.color2, targetColors.color2);
-      lerp(colors.color3, baseColors.color3);
-
-      if (program) {
-        program.uniforms.uColor1.value = colors.color1;
-        program.uniforms.uColor2.value = colors.color2;
-        program.uniforms.uColor3.value = colors.color3;
-        program.uniforms.uSpinSpeed.value = isLoading ? loadingSpinSpeed : spinSpeed;
-        program.uniforms.iTime.value = time * 0.001;
+      for (let i = 0; i < 15; i += 1) {
+        colors.color1[i] += (targetColors.color1[i] - colors.color1[i]) * lerpFactor;
+        colors.color2[i] += (targetColors.color2[i] - colors.color2[i]) * lerpFactor;
       }
+      program.uniforms.uColor1.value = colors.color1;
+      program.uniforms.uColor2.value = colors.color2;
+      program.uniforms.uColor3.value = colors.color3;
 
+      program.uniforms.iTime.value = time * 0.001;
       renderer.render({ scene: mesh });
-    };
-
+    }
     animationFrameId = requestAnimationFrame(update);
     container.appendChild(gl.canvas);
 
     return () => {
       cancelAnimationFrame(animationFrameId);
-      window.removeEventListener("resize", resize);
-      if (gl.canvas.parentNode === container) {
-        container.removeChild(gl.canvas);
-      }
-      gl.getExtension("WEBGL_lose_context")?.loseContext();
+      window.removeEventListener('resize', resize);
+      container.removeChild(gl.canvas);
+      gl.getExtension('WEBGL_lose_context')?.loseContext();
     };
   }, [
-    baseColors,
-    contrast,
-    getIsLoading,
-    isRotate,
-    lighting,
-    loadingColors,
-    loadingSpinSpeed,
-    offset,
-    pixelFilter,
-    spinAmount,
-    spinEase,
     spinRotation,
     spinSpeed,
+    offset,
+    contrast,
+    lighting,
+    spinAmount,
+    pixelFilter,
+    spinEase,
+    isRotate,
+    baseColors,
+    loadingColors,
+    getIsLoading,
+    loadingSpinSpeed
   ]);
 
   return <div ref={containerRef} className="w-full h-full" />;

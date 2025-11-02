@@ -76,14 +76,16 @@ export function Appear({
   children,
   duration = 0.5,
   delay = 0,
+  className,
 }: {
   children: React.ReactNode;
   duration?: number;
   delay?: number;
+  className?: string;
 }) {
   return (
     <motion.span
-      className="inline-flex items-center justify-center bg-orange-500 p-0.5 ml-2"
+      className={`inline-flex items-center justify-center bg-orange-500 p-0.5 ml-2 ${className}`}
       initial={{ scale: 0 }}
       animate={{ scale: 1, rotate: 3 }}
       transition={{ duration, type: "spring", damping: 9, delay }}

@@ -73,7 +73,7 @@ export function NavBar() {
           </Link>
         );
 
-        if (index >= baseLinks.length) {
+        if (index === renderedLinks.length - 1) {
           return (
             <motion.div key={link.href} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}>
               {content}

@@ -1,9 +1,10 @@
 'use client';
 
 import type { ReactNode } from "react";
-import { BalatroBackground } from "@/app/(site)/components/layout/BalatroBackground";
+import  BalatroBackground from "@/app/(site)/components/layout/BalatroBackground";
 import { NavBar } from "@/app/(site)/components/nav/NavBar";
 import { RHUANGGPT } from "@/app/(site)/components/chat/RHUANGGPT";
+import { ErrorComponent } from "../error/error";
 
 interface AppShellProps {
   children: ReactNode;
@@ -29,8 +30,9 @@ export function AppShell({ children }: AppShellProps) {
               <div className="col-1 fixed mb-5">
                 <NavBar />
               </div>
-              <div className="col-2">
+              <div className="col-2 h-auto">
                 {children}
+                <ErrorComponent />
               </div>
 
               <div className="absolute bottom-3 left-1/2 -translate-x-1/2 text-xs text-muted-foreground">
