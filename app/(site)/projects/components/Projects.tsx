@@ -25,9 +25,9 @@ const timeline: ProjectEntry[] = [
   },
 ];
 
-export function ProjectsTimeline() {
+export function Projects() {
   return (
-    <section className="mx-auto w-full space-y-6.5">
+    <section className="w-full space-y-6.5">
       <h1 className="flex items-center">
         Projects <HeadingLightbulb shakeDuration={0.5} />
       </h1>

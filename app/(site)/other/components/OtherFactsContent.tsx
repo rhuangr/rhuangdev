@@ -21,7 +21,7 @@ const games = [
 
 export function OtherFactsContent() {
   return (
-    <section className="mx-auto space-y-6.5">
+    <section className="space-y-6.5">
       <h1 className="flex items-center">
         Other Facts
         <Appear delay={0.5}>

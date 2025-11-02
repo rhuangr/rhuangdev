@@ -12,19 +12,25 @@ export function HomeAboutSection() {
 
       <section>
         <h2>About</h2>
-  <p>I&apos;m a second year Computer Science student at McGill University.</p>
-  <p>I&apos;m interested in frontend dev, AI and systems engineering.</p>
+        <p>
+          I&apos;m a second year Computer Science student at McGill University.
+        </p>
+        <p>I&apos;m interested in frontend dev, AI and systems engineering.</p>
       </section>
 
       <section>
         <h2>Experience</h2>
         <p>
-          <span className="mr-2 font-geist-mono text-muted-foreground">Jan-May 2026</span>
+          <span className="mr-2 font-geist-mono text-muted-foreground">
+            Jan-May 2026
+          </span>
           Incoming Backend Intern at
           <HighlightedText text="Autodesk" />
         </p>
         <p>
-          <span className="mr-2 font-geist-mono text-muted-foreground">Jan-Sep 2025</span>
+          <span className="mr-2 font-geist-mono text-muted-foreground">
+            Jan-Sep 2025
+          </span>
           Engineering Intern at
           <HighlightedText text="Shopify" />
         </p>

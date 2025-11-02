@@ -51,7 +51,7 @@ function AITextArea() {
   }, [isLoading, latestPageSlug, pathname, router]);
 
   return (
-    <div className="group relative top-1/2 h-11 w-lg w-md max-w-[95vh] mx-auto transition-all duration-700 ease-in-out">
+    <div className="group relative top-1/2 h-11 w-lg w-md max-w-[95vw] mx-auto transition-all duration-700 ease-in-out">
       <input
         value={prompt}
         disabled={isLoading}
