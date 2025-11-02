@@ -1,4 +1,13 @@
 @import "tailwindcss";
+@import "./shared/fonts/playfair-display.css";
+@import "./shared/fonts/roboto-condensed.css";
+@import "./shared/fonts/eb-garamond.css";
+@import "./shared/fonts/pp-neue-montreal.css";
+@import "./shared/fonts/inter.css";
+@import "./shared/fonts/uncut-sans.css";
+@import "./shared/fonts/geist-mono.css";
+@import "./shared/fonts/chivo-mono.css";
+@import "tw-animate-css";
 
 :root {
   font-synthesis: none;
@@ -15,7 +24,7 @@
   --font-size-body: 14.5px;
   --grid-side-header-width: 220px;
   --grid-column-gap: 0px;
-  --background: oklch(12.903% 0.04885 295.206);
+  --background: oklch(13.192% 0.03284 297.01);
   --foreground: oklch(100% 0.00011 271.152);
   --card: oklch(23.169% 0.02513 294.933/0.99);
   --card-foreground: oklch(0.985 0 0);
@@ -144,3 +153,53 @@ h2 {
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 }
+
+@theme {
+  @keyframes gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+
+    50% {
+      background-position: 100% 50%;
+    }
+
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  @keyframes pulse-scale {
+
+    0%,
+    100% {
+      transform: scale(0.9);
+    }
+
+    50% {
+      transform: scale(1.15);
+    }
+  }
+
+  @keyframes pulse-scale-mini {
+
+    0%,
+    100% {
+      transform: scale(1);
+    }
+
+    50% {
+      transform: scale(1.05);
+    }
+  }
+
+  --animate-gradient: gradient 8s linear infinite;
+  --animate-pulse-scale: pulse-scale 1s ease-in-out infinite;
+  --animate-pulse-scale-mini: pulse-scale-mini 2s ease-in-out infinite;
+}
+
+/* html, body, #root {
+  height: 100%;
+  overscroll-behavior: none;
+} */
+
