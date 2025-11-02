@@ -10,7 +10,8 @@ import {
   useState,
 } from "react";
 import { useAI } from "./useAI";
-import type { AIResponseType } from "@/app/(site)/components/chat/useAI.ts"
+import type { AIResponseType } from "@/app/(site)/chat/useAI.ts";
+import { useRouter } from "next/navigation";
 
 type GeneratedPages = Record<string, AIResponseType>;
 
@@ -47,6 +48,7 @@ export function RhuangrContextProvider({
   const [generatedPages, setGeneratedPages] = useState<GeneratedPages>({});
   const [latestPageSlug, setLatestPageSlug] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   // updating balatro background when loading
   useEffect(() => {
@@ -57,24 +59,24 @@ export function RhuangrContextProvider({
       getIsLoading: () => isLoadingRef.current,
     }),
     []
-  );  
+  );
 
   const submitPrompt = useCallback(
     async (prompt: string) => {
       try {
+        router.push("/loading");
         const result = await submitPromptInternal(prompt);
         if (!result) return;
         const slug = slugifyHeading(result.heading);
         setLatestPageSlug(slug);
         setGeneratedPages((prev) => ({ ...prev, [slug]: result }));
       } catch (error) {
-        console.error("Error submitting prompt:", error);
         setError(
           error instanceof Error ? error.message : "An unknown error occurred"
         );
       }
     },
-    [submitPromptInternal]
+    [submitPromptInternal, router]
   );
 
   const getGeneratedPage = useCallback(

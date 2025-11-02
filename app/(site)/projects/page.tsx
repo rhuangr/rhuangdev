@@ -1,5 +1,5 @@
-import { ProjectsTimeline } from "@/app/(site)/projects/components/ProjectsTimeline";
+import { Projects } from "@/app/(site)/projects/components/Projects";
 
 export default function ProjectsPage() {
-  return <ProjectsTimeline />;
+  return <Projects />;
 }

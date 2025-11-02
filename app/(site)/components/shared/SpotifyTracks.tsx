@@ -62,7 +62,7 @@ function SpotifyItem({
       allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
       data-testid="embed-iframe"
       src={track}
-      className="absolute left-0 h-22 w-4/5 z-5 pb-1 rounded-md border-0 shadow-lg"
+      className="absolute left-0 h-22 w-full z-5 pb-1 rounded-md border-0 shadow-lg"
       animate={hidden ? "stacked" : "expanded"}
       variants={variants}
       custom={{ i, loaded }}

@@ -25,19 +25,23 @@ const timeline: ProjectEntry[] = [
   },
 ];
 
-export function ProjectsTimeline() {
+export function Projects() {
   return (
-    <section className="mx-auto w-full space-y-6.5">
+    <section className="w-full space-y-6.5">
       <h1 className="flex items-center">
         Projects <HeadingLightbulb shakeDuration={0.5} />
       </h1>
       {timeline.map((item) => (
         <article key={item.projectName} className="space-y-2">
           <header className="flex justify-between">
-            <h2 className="text-heading font-[700] text-foreground">{item.projectName}</h2>
+            <h2 className="text-heading font-[700] text-foreground">
+              {item.projectName}
+            </h2>
           </header>
           <p className="text-foreground">{item.summary}</p>
-          <HighlightedText tilt text="Check it out" className="mt-1.5" href={item.link} />
+          <HighlightedText tilt className="mt-1.5" href={item.link}>
+            Check it out
+          </HighlightedText>
           <SkillList items={item.skills} />
         </article>
       ))}

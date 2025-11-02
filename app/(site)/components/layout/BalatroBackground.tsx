@@ -1,6 +1,6 @@
-import { Renderer, Program, Mesh, Triangle } from 'ogl';
-import { useEffect, useMemo, useRef } from 'react';
-import { useLoadingContext } from "@/app/(site)/components/chat/rhuangrContext";
+import { Renderer, Program, Mesh, Triangle } from "ogl";
+import { useEffect, useMemo, useRef } from "react";
+import { useLoadingContext } from "@/app/(site)/chat/rhuangrContext";
 
 interface BalatroProps {
   spinRotation?: number;
@@ -19,7 +19,7 @@ interface BalatroProps {
 }
 
 function hexToVec4(hex: string): [number, number, number, number] {
-  let hexStr = hex.replace('#', '');
+  const hexStr = hex.replace("#", "");
   let r = 0,
     g = 0,
     b = 0,
@@ -71,6 +71,17 @@ uniform vec2 uMouse;
 varying vec2 vUv;
 
 vec4 effect(vec2 screenSize, vec2 screen_coords) {
+    vec2 center = screenSize * 0.5;
+    float distX = abs(screen_coords.x - center.x);
+    float distY = abs(screen_coords.y - center.y);
+
+    float middleWidth = screenSize.x * 0.7;
+    float middleHeight = screenSize.y * 0.7;
+
+    if (distX < middleWidth * 0.5 && distY < middleHeight * 0.5) {
+        discard;
+    }
+
     float pixel_size = length(screenSize.xy) / uPixelFilter;
     vec2 uv = (floor(screen_coords.xy * (1.0 / pixel_size)) * pixel_size - 0.5 * screenSize.xy) / length(screenSize.xy) - uOffset;
     float uv_len = length(uv);
@@ -123,9 +134,9 @@ export default function RecBalatro({
   spinRotation = -2.0,
   spinSpeed = 7.0,
   offset = [0.0, 0.0],
-  color1 = '#a43400ff',
-  color2 = '#00234eff',
-  color3 = '#2e005cff',
+  color1 = "#a43400ff",
+  color2 = "#00234eff",
+  color3 = "#2e005cff",
   contrast = 3.5,
   lighting = 0.4,
   spinAmount = 0.25,
@@ -139,7 +150,7 @@ export default function RecBalatro({
   const currentColorsRef = useRef({
     color1: new Float32Array(hexToVec4(color1)),
     color2: new Float32Array(hexToVec4(color2)),
-    color3: new Float32Array(hexToVec4(color3))
+    color3: new Float32Array(hexToVec4(color3)),
   });
   const lastTimeRef = useRef<number | null>(null);
 
@@ -147,15 +158,15 @@ export default function RecBalatro({
     () => ({
       color1: hexToVec4(color1),
       color2: hexToVec4(color2),
-      color3: hexToVec4(color3)
+      color3: hexToVec4(color3),
     }),
     [color1, color2, color3]
   );
 
   const loadingColors = useMemo(
     () => ({
-      color1: hexToVec4('#ffd467ff'),
-      color2: hexToVec4('#ff6c71ff'),
+      color1: hexToVec4("#ffd467ff"),
+      color2: hexToVec4("#ff6c71ff"),
     }),
     []
   );
@@ -166,34 +177,26 @@ export default function RecBalatro({
     if (!containerRef.current) return;
     const container = containerRef.current;
     const renderer = new Renderer();
+
     const gl = renderer.gl;
     gl.clearColor(0, 0, 0, 1);
-
-    let program: Program;
-
-    function resize() {
-      renderer.setSize(container.offsetWidth, container.offsetHeight);
-      if (program) {
-        program.uniforms.iResolution.value = [gl.canvas.width, gl.canvas.height, gl.canvas.width / gl.canvas.height];
-      }
-    }
-    window.addEventListener('resize', resize);
-    resize();
-
-    const geometry = new Triangle(gl);
     const initialColors = {
       color1: new Float32Array(baseColors.color1),
       color2: new Float32Array(baseColors.color2),
-      color3: new Float32Array(baseColors.color3)
+      color3: new Float32Array(baseColors.color3),
     };
     currentColorsRef.current = initialColors;
-    program = new Program(gl, {
+    const program = new Program(gl, {
       vertex: vertexShader,
       fragment: fragmentShader,
       uniforms: {
         iTime: { value: 0 },
         iResolution: {
-          value: [gl.canvas.width, gl.canvas.height, gl.canvas.width / gl.canvas.height]
+          value: [
+            gl.canvas.width,
+            gl.canvas.height,
+            gl.canvas.width / gl.canvas.height,
+          ],
         },
         uSpinRotation: { value: spinRotation },
         uSpinSpeed: { value: spinSpeed },
@@ -207,9 +210,24 @@ export default function RecBalatro({
         uPixelFilter: { value: pixelFilter },
         uSpinEase: { value: spinEase },
         uIsRotate: { value: isRotate },
-        uMouse: { value: [0.5, 0.5] }
-      }
+        uMouse: { value: [0.5, 0.5] },
+      },
     });
+
+    function resize() {
+      renderer.setSize(container.offsetWidth, container.offsetHeight);
+      if (program) {
+        program.uniforms.iResolution.value = [
+          gl.canvas.width,
+          gl.canvas.height,
+          gl.canvas.width / gl.canvas.height,
+        ];
+      }
+    }
+    window.addEventListener("resize", resize);
+    resize();
+
+    const geometry = new Triangle(gl);
 
     const mesh = new Mesh(gl, { geometry, program });
     let animationFrameId: number;
@@ -229,8 +247,10 @@ export default function RecBalatro({
       const targetColors = isLoading ? loadingColors : baseColors;
       const colors = currentColorsRef.current;
       for (let i = 0; i < 15; i += 1) {
-        colors.color1[i] += (targetColors.color1[i] - colors.color1[i]) * lerpFactor;
-        colors.color2[i] += (targetColors.color2[i] - colors.color2[i]) * lerpFactor;
+        colors.color1[i] +=
+          (targetColors.color1[i] - colors.color1[i]) * lerpFactor;
+        colors.color2[i] +=
+          (targetColors.color2[i] - colors.color2[i]) * lerpFactor;
       }
       program.uniforms.uColor1.value = colors.color1;
       program.uniforms.uColor2.value = colors.color2;
@@ -244,9 +264,9 @@ export default function RecBalatro({
 
     return () => {
       cancelAnimationFrame(animationFrameId);
-      window.removeEventListener('resize', resize);
+      window.removeEventListener("resize", resize);
       container.removeChild(gl.canvas);
-      gl.getExtension('WEBGL_lose_context')?.loseContext();
+      gl.getExtension("WEBGL_lose_context")?.loseContext();
     };
   }, [
     spinRotation,
@@ -261,7 +281,7 @@ export default function RecBalatro({
     baseColors,
     loadingColors,
     getIsLoading,
-    loadingSpinSpeed
+    loadingSpinSpeed,
   ]);
 
   return <div ref={containerRef} className="w-full h-full" />;

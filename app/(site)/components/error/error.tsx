@@ -1,6 +1,6 @@
 "use client";
 
-import { useRhuangrContext } from "../chat/rhuangrContext";
+import { useRhuangrContext } from "@/app/(site)/chat/rhuangrContext";
 import { Appear } from "../shared/HeadingIcon";
 import { TriangleAlert } from "lucide-react";
 

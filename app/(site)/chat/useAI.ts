@@ -6,7 +6,7 @@ export type AIResponseType = {
     subheading: string;
     content: string;
   }[];
-  confidenceScore: number; 
+  confidenceScore: number;
 };
 
 export function useAI() {
@@ -21,15 +21,8 @@ export function useAI() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt }),
       });
-      if (!response.ok) {
-        throw new Error(`ERROR: HTTP ${response.status}, try again later..`);
-      }
-      const data = await response.json();
-      const output = JSON.parse(data);
-      validateOutput(output);
-      console.log(output.confidenceScore)
+      const output = await validateResponse(response);
       return output;
-
     } finally {
       setLoading(false);
     }
@@ -38,19 +31,25 @@ export function useAI() {
   return { isLoading, submitPrompt };
 }
 
-function validateOutput(result: AIResponseType) {
-  if (!result) {
-    console.error("No result to handle in RhuangrContextProvider");
+async function validateResponse(response: Response) {
+  if (!response.ok) {
+    if (response.status == 429 && response.status < 500) {
+      throw new Error('Too many people are using the ai... try again later :(');
+    }
+    throw new Error(`ERROR: HTTP ${response.status}`);
+  }
+  const data = await response.json();
+  const output = JSON.parse(data);
+  if (!output) {
     throw new Error("Missing AI output");
   }
 
-  if (!result.heading) {
-    console.error("Result is missing heading:", result);
+  if (!output.heading) {
     throw new Error("Result is missing heading");
   }
 
-  if (!Array.isArray(result.paragraphs)) {
-    console.error("Result paragraphs is faulty:", result);
+  if (!Array.isArray(output.paragraphs)) {
     throw new Error("Result paragraphs is faulty");
   }
+  return output as AIResponseType;
 }

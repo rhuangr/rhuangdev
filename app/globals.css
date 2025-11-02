@@ -15,7 +15,7 @@
   --font-size-body: 14.5px;
   --grid-side-header-width: 220px;
   --grid-column-gap: 0px;
-  --background: oklch(12.903% 0.04885 295.206);
+  --background: oklch(12.253% 0.07035 293.05);
   --foreground: oklch(100% 0.00011 271.152);
   --card: oklch(23.169% 0.02513 294.933/0.99);
   --card-foreground: oklch(0.985 0 0);
@@ -47,6 +47,7 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+  overscroll-behavior: none;
 }
 
 #root {
@@ -69,7 +70,7 @@ body {
 }
 
 h1 {
-  @apply text-[22px] font-[700] pb-1 w-fit text-left flex items-center gap-2;
+  @apply text-[22px] font-[700] w-full pb-1 text-left flex items-center gap-2;
 }
 
 

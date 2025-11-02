@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { GoogleGenAI, Type } from "@google/genai";
 import { systemPrompt } from "./systemPrompt";
+import { ApiError } from "@google/genai";
 
 if (!process.env.GEMINI_API_KEY) {
   throw new Error("GEMINI_API_KEY environment variable is not set");
@@ -27,14 +28,15 @@ export async function POST(request: Request) {
 
   try {
     const response = await callGemini("gemini-2.5-flash-lite");
-
     return NextResponse.json(response.text);
-  } catch (error) {
-    console.error("Gemini API Error:", error);
+  } catch (err) {
+    if (err instanceof ApiError) {
+      return NextResponse.json({ error: err.message }, { status: err.status });
+    }
     return NextResponse.json(
       { error: "Failed to generate content. Please try again later." },
       { status: 500 }
-    )
+    );
   }
 }
 
@@ -61,11 +63,6 @@ const llmOutputSchema = {
       maxItems: 3,
       minItems: 1,
     },
-    confidenceScore: {
-      type: Type.INTEGER,
-      minimum: 0,
-      maximum: 100,
-    },
   },
-  required: ["heading", "paragraphs", "confidenceScore"],
+  required: ["heading", "paragraphs"],
 };
