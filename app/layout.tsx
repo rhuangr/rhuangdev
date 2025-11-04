@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Richard Huang — Developer Portfolio",
-  description: "Portfolio and interactive AI experiences by Richard Huang.",
+  title: "Richard Huang",
+  description: "Richard Huang's Personal Website",
 };
 
 export default function RootLayout({
