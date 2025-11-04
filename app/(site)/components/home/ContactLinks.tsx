@@ -3,7 +3,7 @@ import { ArrowUpRight, Download, Mail, type LucideIcon } from "lucide-react";
 const GITHUB = "https://github.com/rhuangr";
 const LINKEDIN = "https://www.linkedin.com/in/rhuangr";
 const EMAIL = "richardhuang197@gmail.com";
-const RESUME = "/Assets/RichardHuang-Resume.pdf";
+const RESUME = "/RichardHuang-Resume.pdf";
 
 const links: Array<{
   label: string;

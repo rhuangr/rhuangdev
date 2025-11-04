@@ -4,7 +4,7 @@ import { HeadingSmiley } from "@/app/(site)/components/shared/HeadingIcon";
 
 export function HomeAboutSection() {
   return (
-    <section className="mx-auto w-full space-y-6.5">
+    <section className=" w-full space-y-6.5">
       <h1 className="w-fit origin-center pb-1 text-left text-[22px] font-[700]">
         Hello, I&apos;m Richard
         <HeadingSmiley />
@@ -15,7 +15,6 @@ export function HomeAboutSection() {
         <p>
           I&apos;m a second year Computer Science student at McGill University.
         </p>
-        <p>I&apos;m interested in frontend dev, AI and systems engineering.</p>
       </section>
 
       <section>
@@ -25,14 +24,14 @@ export function HomeAboutSection() {
             Jan-May 2026
           </span>
           Incoming Backend Intern at
-          <HighlightedText text="Autodesk" />
+          <HighlightedText>Autodesk</HighlightedText>
         </p>
         <p>
           <span className="mr-2 font-geist-mono text-muted-foreground">
             Jan-Sep 2025
           </span>
           Engineering Intern at
-          <HighlightedText text="Shopify" />
+          <HighlightedText>Shopify</HighlightedText>
         </p>
       </section>
 

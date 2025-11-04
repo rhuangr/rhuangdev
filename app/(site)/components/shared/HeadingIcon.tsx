@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
@@ -13,12 +13,18 @@ export function HeadingSmiley() {
       animate={{ rotate: 96 }}
       transition={{ duration: 1.2, type: "spring", stiffness: 200, delay: 0.7 }}
     >
-      <HighlightedText className="!px-2 pt-0.5 !pb-1.5 font-[800]" text=":)" />
+      <HighlightedText className="!px-2 pt-0.5 !pb-1.5 font-[800]">
+        {":)"}
+      </HighlightedText>
     </motion.span>
   );
 }
 
-export function HeadingLightbulb({ shakeDuration = 0.5 }: { shakeDuration?: number }) {
+export function HeadingLightbulb({
+  shakeDuration = 0.5,
+}: {
+  shakeDuration?: number;
+}) {
   const [isOn, setOn] = useState(false);
 
   useEffect(() => {
@@ -34,7 +40,12 @@ export function HeadingLightbulb({ shakeDuration = 0.5 }: { shakeDuration?: numb
             <Lightbulb className="size-7 bg-orange-500" />
           </Appear>
         ) : (
-          <Shake key="off" shakeDuration={shakeDuration} rotateAmount={10} repeat={3}>
+          <Shake
+            key="off"
+            shakeDuration={shakeDuration}
+            rotateAmount={10}
+            repeat={3}
+          >
             <LightbulbOff className="size-7" />
           </Shake>
         )}

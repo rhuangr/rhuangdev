@@ -1,6 +1,6 @@
 import { Renderer, Program, Mesh, Triangle } from 'ogl';
 import { useEffect, useMemo, useRef } from 'react';
-import { useLoadingContext } from "@/app/(site)/components/chat/rhuangrContext";
+import { useLoadingContext } from "@/app/(site)/chat/rhuangrContext";
 
 interface BalatroProps {
   spinRotation?: number;
@@ -71,6 +71,17 @@ uniform vec2 uMouse;
 varying vec2 vUv;
 
 vec4 effect(vec2 screenSize, vec2 screen_coords) {
+    vec2 center = screenSize * 0.5;
+    float distX = abs(screen_coords.x - center.x);
+    float distY = abs(screen_coords.y - center.y);
+
+    float middleWidth = screenSize.x * 0.7;
+    float middleHeight = screenSize.y * 0.7;
+
+    if (distX < middleWidth * 0.5 && distY < middleHeight * 0.5) {
+        discard;
+    }
+
     float pixel_size = length(screenSize.xy) / uPixelFilter;
     vec2 uv = (floor(screen_coords.xy * (1.0 / pixel_size)) * pixel_size - 0.5 * screenSize.xy) / length(screenSize.xy) - uOffset;
     float uv_len = length(uv);

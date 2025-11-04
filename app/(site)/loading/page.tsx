@@ -1,5 +1,5 @@
-import { LoadingState } from "@/app/(site)/loading/components/LoadingState";
+import { LoadingPage } from "@/app/(site)/loading/components/LoadingPage";
 
-export default function LoadingPage() {
-  return <LoadingState />;
+export default function Loading() {
+  return <LoadingPage />;
 }

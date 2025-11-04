@@ -3,8 +3,19 @@
 import { Skeleton } from "@/app/(site)/components/shared/Skeleton";
 import { Shake } from "@/app/(site)/components/shared/HeadingIcon";
 import { CookingPot } from "lucide-react";
+import { useRhuangrContext } from "../../chat/rhuangrContext";
+import { redirect, RedirectType } from 'next/navigation'
+import { useEffect } from "react";
 
-export function LoadingState() {
+export function LoadingPage() {
+  const { latestPageSlug } = useRhuangrContext();
+
+  useEffect(() => {
+    if (latestPageSlug) {
+      redirect(`/${latestPageSlug}`, RedirectType.replace);
+    }
+  }, [latestPageSlug]);
+
   return (
     <div className="flex w-full flex-col">
       <h1 className="flex items-center gap-2">

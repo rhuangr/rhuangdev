@@ -2,8 +2,8 @@
 
 import type { ReactNode } from "react";
 import BalatroBackground from "@/app/(site)/components/layout/BalatroBackground";
+import { MobileNavBar } from "@/app/(site)/components/nav/MobileNavBar";
 import { NavBar } from "@/app/(site)/components/nav/NavBar";
-import { RHUANGGPT } from "@/app/(site)/components/chat/RHUANGGPT";
 import { ErrorComponent } from "../error/error";
 
 interface AppShellProps {
@@ -16,27 +16,19 @@ export function AppShell({ children }: AppShellProps) {
       <div className="fixed h-screen w-full">
         <BalatroBackground />
       </div>
-      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 -translate-y-10 z-1">
-        <RHUANGGPT />
-        <div className="text-center text-xs pt-2">
-          {" "}
-          © 2025 Made by Richard Huang
-        </div>
-      </div>
       <div className="min-h-screen relative w-full">
-        <div className="relative bg-background rounded-b-3xl shadow-lg/20 z-5 mx-10">
-          <div className="relative w-full text-foreground mb-40">
-            <main className="min-h-[95vh] mx-auto max-w-2xl grid grid-cols-1 md:grid-cols-[2fr_5fr] items-center px-10 pb-7 md:px-0 relative pt-20 pb-25">
-              {" "}
-              <div className="col-1 mb-5">
+        <div className="relative bg-background rounded-b-3xl shadow-lg/20 lg:mx-8">
+          <div className="w-full text-foreground">
+            <div className="relative top-12 left-6 z-1 md:hidden">
+              <MobileNavBar />
+            </div>
+            <main className="relative min-h-[calc(100vh-2rem)] max-w-2xl mx-auto grid grid-cols-1 md:grid-cols-[170px_400px] items-center px-8 relative pt-20 pb-25">
+              <div className="hidden md:block md:col-start-1 md:col-span-1">
                 <NavBar />
               </div>
-              <div className="col-2 h-auto">
+              <div className="col-span-1 md:col-start-2 md:col-span-2">
                 {children}
                 <ErrorComponent />
-              </div>
-              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 text-xs text-muted-foreground">
-                Still curious? Keep scrolling
               </div>
             </main>
           </div>

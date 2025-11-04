@@ -9,7 +9,7 @@ const games = [
     rel: "noopener noreferrer",
   },
   {
-    name: "League of Legends",
+    name: "League of Legends ( almost went professional )",
     href: "https://www.leagueoflegends.com/",
   },
   {
@@ -21,7 +21,7 @@ const games = [
 
 export function OtherFactsContent() {
   return (
-    <section className="space-y-6.5">
+    <section className=" w-full space-y-6.5">
       <h1 className="flex items-center">
         Other Facts
         <Appear delay={0.5}>
@@ -30,7 +30,7 @@ export function OtherFactsContent() {
       </h1>
 
       <section>
-  <h2>Things I&apos;m Learning</h2>
+        <h2>Things I&apos;m Learning</h2>
         <ul className="list-disc list-inside">
           <li>How to cook</li>
           <li>Operating Systems</li>
