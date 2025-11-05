@@ -103,7 +103,7 @@ function IndividualNavLink({
       className={[
         "relative px-1.5 text-subheading transform transition-colors transition-transform duration-200 inline-block origin-left",
         isActive
-          ? "text-foreground font-bold translate-x-3 scale-120 -rotate-1"
+          ? "text-foreground font-bold translate-x-3 scale-120"
           : "text-foreground/70 font-normal",
         "hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
       ].join(" ")}

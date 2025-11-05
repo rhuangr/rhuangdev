@@ -19,7 +19,7 @@ const links: Array<{
 
 export function ContactLinks() {
   return (
-    <div className="flex space-x-2">
+    <div className="flex  space-x-1 md:space-x-3">
       {links.map((link) => {
         const Icon = link.icon;
         const isMailOrDownload = link.href.startsWith("mailto:") || link.download;
@@ -34,7 +34,7 @@ export function ContactLinks() {
             className="group flex h-6.75 w-fit items-center rounded-sm border-1 border-gray-50/10 bg-gray-400/10 px-3 py-2 transition-colors transition-transform duration-400 ease-in-out hover:rotate-3 hover:scale-110 hover:bg-orange-500"
           >
             <span className="text-xs text-foreground">{link.label}</span>
-            <Icon className="ml-1 w-4 shrink-0 pl-1 text-foreground transition-transform duration-150 group-hover:scale-135" />
+            <Icon className="w-4 pl-1 text-foreground transition-transform duration-150 group-hover:scale-135" />
           </a>
         );
       })}

@@ -9,7 +9,7 @@ export function MobileNavBar() {
   const pathname = usePathname();
 
   return (
-    <nav className="md:hidden w-full flex justify-start items-center">
+    <nav className="md:hidden flex justify-start items-center w-fit rounded-sm border-b-2 pb-0.5 border-muted-foreground/30">
       {baseLinks.map((link) => {
         const isActive = pathname === link.href;
         const iconClasses = [

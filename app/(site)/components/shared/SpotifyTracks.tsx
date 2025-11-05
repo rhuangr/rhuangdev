@@ -32,15 +32,16 @@ export function SpotifyTracks() {
   };
 
   return (
-    <div
-      className="relative h-32"
+    <motion.div
+      animate={{ height: hidden ? 45 : 200 }}
       onMouseEnter={() => setHidden(false)}
       onMouseLeave={() => setHidden(true)}
+      className="relative"
     >
       {spotifyTracks.map((track, i) => (
         <SpotifyItem key={track} track={track} hidden={hidden} variants={itemVariants} i={i} />
       ))}
-    </div>
+    </motion.div>
   );
 }
 
