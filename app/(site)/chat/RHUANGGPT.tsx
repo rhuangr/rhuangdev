@@ -52,7 +52,7 @@ function AITextArea() {
         onChange={(event) => setPrompt(event.target.value)}
         onKeyDown={handleKeyDown}
         placeholder="Ask me a question..."
-        className="relative text-[13px] top-1/2 -translate-y-1/2 bg-foreground/80 text-black backdrop-blur-md shadow-xl focus:outline-none focus:ring-2 focus:ring-orange-300 placeholder-black/40  h-10 w-full rounded-lg  border border-red-50/10 pr-10 pl-5"
+        className="relative text-[12px] top-1/2 -translate-y-1/2 bg-foreground/80 text-black backdrop-blur-md shadow-xl focus:outline-none focus:ring-2 focus:ring-orange-300 placeholder-black/40  h-9.5 w-full rounded-lg  border border-red-50/10 pr-10 pl-5"
       />
 
       <button

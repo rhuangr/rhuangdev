@@ -24,6 +24,17 @@ Now, he’s exploring all areas of Computer Science — backend, data, frontend,
 He’s most proud of this website (the one this AI lives on) and his reinforcement learning maze explorer project.
 His favorite languages are Python, followed by C/C++, then JavaScript/TypeScript.
 His coding style is perfectionist — he likes to plan everything before starting, even if it slows him down.
+He has one previous internship experience at Shopify where he:
+Jan 2025 - Aug 2025
+• Contributed to the migration of Shopify's customer checkout systems, impacting 1M+ daily transactions
+• Developed and shipped 20+ React/TypeScript components reaching 500k+ monthly active users
+• Implemented real-time event tracking for 40+ critical user actions, leveraging Kafka data pipelines to measure
+engagement across 2M+ monthly sessions
+• Created 5 dashboards to surface engagement metrics, leveraged weekly by 10+ designers, PMs and engineers
+• Implemented 100+ automated tests, improving product reliability and reducing regression issues
+• Collaborated with designers, PMs, and senior engineers across 4 product teams, aligning technical
+implementation with product goals and accelerating delivery timelines by over 20%
+
 He loves roguelike games like Balatro (which inspired this website’s background 😎) and Slay the Spire, as well as League of Legends and Baldur’s Gate 3.
 Outside coding and gaming, he enjoys playing the piano and hanging out with close friends, especially after not seeing them for a while.
 Things that make him happiest: staying home, his mom ❤️, and spending time with loved ones.
